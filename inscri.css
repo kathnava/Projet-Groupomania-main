@@ -1,0 +1,64 @@
+*{box-sizing: border-box;}
+body{
+    width: 100%;
+    display:flex;
+    justify-content: center;
+    background-color: bisque;
+    margin:10% 0 0 0;
+
+
+}
+
+
+.connexion{
+    display:flex;
+    flex-direction: column;
+    justify-content:space-between;
+    align-self: center;
+    align-items: center;
+    width: 35%;
+    height:450px;
+    box-shadow: 35px;
+    background-color: white;
+    border:solid 1px #aea0a0;
+    border-radius:15px;
+
+}
+
+.connexion img{
+    width:250px;
+    align-self: center;
+    margin:45px 0 0 0 ;
+
+}
+input{
+    width:350px;
+    height: 30px;
+    border-radius: 5px;
+}
+
+
+#Se-connecter{
+    width:150px;
+    height: 35px;
+    color: rgb(0, 0, 0);
+    background-color:#FFD7D7;
+    align-self: center;
+    margin:25px 0 0 0;
+    border-radius: 5px;
+    border:solid 1px #FFD7D7;
+   font-weight: bold;
+}
+a{
+    align-self: center;
+    color:#FD2D01;
+    font-family: 'Lato';
+    margin-bottom: 30px;
+
+}
+
+.for{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
