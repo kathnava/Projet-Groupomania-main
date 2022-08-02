@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Publication.init({
-    idPublication: DataTypes.interger,
+    idPublication: DataTypes.INTEGER,
     Content: DataTypes.STRING,
     Attachement: DataTypes.STRING,
     userId: DataTypes.INTEGER

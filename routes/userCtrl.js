@@ -20,9 +20,6 @@ module.exports = {
         if (email == null || nom == null || prenom == null || password == null) {
             return res.status(400).json({'error': 'Parametres manquantes'})
         }
-        if (username.length >= 13 || username.length <= 4) {
-          return res.status(400).json({ 'error': 'wrong username (must be length 5 - 12)' });
-        }
         if(!EMAIL_REGEX.test(email)) {
             return res.status(400).json({'error': 'Email not valid'})
         }
@@ -42,6 +39,7 @@ module.exports = {
                     done(null, userFound)
                 })
                 .catch((err) => {
+                  console.log(err)
                     return res.status(409).json({'error': 'An error occurred'})
                 })
             },
@@ -68,6 +66,7 @@ module.exports = {
                     done(newUser)
                 })
                 .catch((err) => {
+                  console.log(err)
                     return res.status(400).json({'error': 'An error occurred'})
                 })
             }

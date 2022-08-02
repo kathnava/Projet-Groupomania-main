@@ -24,9 +24,10 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING
       },
-      isAdmint: {
+      isAdmin: {
         allowNull: false,
-        type: Sequelize.BOOLEAN
+        type: Sequelize.BOOLEAN,
+        defaultValue: "0"
       },
       createdAt: {
         allowNull: false,

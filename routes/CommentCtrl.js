@@ -1,7 +1,7 @@
 // Imports
 var models   = require('../models');
 var asyncLib = require('async');
-var jwtUtils = require('../utils/jwt.utils');
+var jwtUtils = require('../jwtUtils');
 
 
 // Constants
