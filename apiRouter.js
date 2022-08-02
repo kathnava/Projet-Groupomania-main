@@ -1,6 +1,7 @@
 const express = require('express');
 const userCtrl = require('./routes/userCtrl');
 const CommentCtrl = require('./routes/CommentCtrl');
+const likesCtrl = require('./routes/likesCtrl');
 
 // Router
 exports.router = (function() {
@@ -16,8 +17,12 @@ apiRouter.route('/getUser/:id').get(userCtrl.getUser)
 apiRouter.route('/getAll').get(userCtrl.getAllUsers)
 
 //Commentaire Routes
-apiRouter.route('/Commentaire/new/').post(CommentCtrl.CreateComment);
-apiRouter.route('/Commentaire/').get(CommentCtrl.ListeComment);
+apiRouter.route('/new/').post(CommentCtrl.CreateComment);
+//apiRouter.route('/Commentaire/').get(CommentCtrl.ListeComment);
 
+//Likes Routes
+//apiRouter.route('/Likes/new/').post(likesCtrl.likePost);
+//apiRouter.route('/Likes/').get(likesCtrl.dislikePost);
 return apiRouter;
+
 })();

@@ -5,7 +5,7 @@ var jwtUtils = require('../jwtUtils');
 
 
 // Constants
-const TITLE_LIMIT   = 2;
+//const TITLE_LIMIT   = 2;
 const CONTENT_LIMIT = 4;
 const ITEMS_LIMIT   = 50;
 
@@ -18,11 +18,16 @@ module.exports = {
 
   // Params
   //var idComment   = req.body.idCommentaire;
-  var content = req.body.text;
-
-  if (/*title == null*/ content == null) {
+  var texte = req.body.texte;
+ 
+  /*if (texte !== null) {
     return res.status(400).json({ 'error': 'missing parameters' });
   }
+
+  //if (texte.length <= CONTENT_LIMIT) {
+    return res.status(400).json({ 'error': 'invalid parameters' });
+  }*/
+
   asyncLib.waterfall([
     function(done) {
       models.User.findOne({
@@ -32,20 +37,22 @@ module.exports = {
         done(null, userFound);
       })
       .catch(function(err) {
+  
         return res.status(500).json({ 'error': 'unable to verify user' });
       });
+     
     },
     function(userFound, done) {
       if(userFound) {
         models.Commentaire.create({
-          //title  : title,
-          content: content,
-          UserId : userFound.id
+          texte: texte,
+          userId : userFound.id
         })
         .then(function(newCommentaire) {
           done(newCommentaire);
         });
       } else {
+        console.log('error')
         res.status(404).json({ 'error': 'user not found' });
       }
     },
@@ -56,8 +63,7 @@ module.exports = {
       return res.status(500).json({ 'error': 'cannot post message' });
     }
   });
-},
-
+},/*
   ListeComment: function (req, res) {
     var fields  = req.query.fields;
     var limit   = parseInt(req.query.limit);
@@ -83,6 +89,85 @@ module.exports = {
       console.log(err);
       res.status(500).json({ "error": "invalid fields" });
     });
-  }
+  },
+  deleteComment: (req, res) => {
+        
+    let headerAuth  = req.headers['authorization'];
+    let userId      = jwtUtils.getUserId(headerAuth);
+
+    asyncLib.waterfall([
+        (done) => {
+            models.Commentaire.destroy({
+                where: { id: userId }
+            })
+            .then((userFound) => {
+                done(userFound)
+            })
+            .catch((err) => {
+                return res.status(400).json({ 'error': 'An error occurred' });
+            });
+        }],
+        (userFound) => {
+            if (userFound) {
+                console.log(userFound)
+                return res.status(200).json({'success':`User successfuly deleted`})
+            }
+            else {
+
+                return res.status(404).json({ 'error': 'User was not found' });
+            }
+        });
+},
+PutComment: ( req, res) => {
+  let headerAuth  = req.headers['authorization'];
+  let userId = jwtUtils.getUserId(headerAuth);
+  
+  let Content = req.body.texte;
+  let idPublication = req.body.idPublication;
+  //let  = req.body.;
+  //let  = req.body.;
+
+asyncLib.waterfall([
+   (done) => {
+       models.Commentaire.findOne({
+           attributes: [ 'id','texte','userId','idPublication'],
+           where :{ id: userId}
+       })
+       .then((commentaireFound)=> {
+           done(null,userFound);
+       })
+       .catch((err) => {
+           return res.status(400).json({ 'error': 'Unable to verify user' });
+       });
+   },
+   (userFound, done) => {
+       if(userFound) {
+         userFound.update({
+             nom: (nom ? nom : userFound.nom),
+             prenom: (prenom ? prenom : userFound.prenom),
+             isAdmin: (isAdmin ? isAdmin : userFound.isAdmin)
+         })
+         .then((userFound) => {
+             done(userFound);
+         })
+         .catch((err) => {
+             res.status(500).json({ 'error': 'cannot update user' });
+         });
+       }
+       else {
+         res.status(404).json({ 'error': 'An error occurred' });
+       }
+     },
+   ], 
+   (userFound) => {
+     if (userFound) {
+         res.status(200).json({'success': 'User successfuly modified'})
+     } 
+     else {
+       return res.status(500).json({ 'error': 'cannot update user profile' });
+     }
+   });
+},
+*/
 }
 
