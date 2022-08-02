@@ -79,7 +79,39 @@ module.exports = {
             }
         })
     },
-     
+    getUser: (req, res) => {
+      var userId = req.params.id;
+
+      models.User.findOne({
+          attributes: ['id', 'nom', 'prenom', 'email', 'isAdmin'],
+          where: {id: userId}
+      })
+      .then((user) => {
+          if(user){
+              res.status(201).json(user)   
+          }
+          else {
+              res.status(404).json({'error': 'User not found'})
+          }
+      })
+      .catch((err) =>  {
+        console.log(err)
+          res.status(500).json({'error': 'Cannot fetch user'});
+      })
+  },
+  
+  getAllUsers: (req, res) => {
+      models.User.findAll({
+          attributes: [ 'id', 'nom', 'prenom', 'email', 'isAdmin' ]
+      })
+      .then((users) => {
+          res.status(200).json(users)
+      })
+      .catch((err) => {
+          res.status(400).json({ 'error': 'An error occurred' });
+      });
+  },
+
     login: (req, res) => {
     
         // Params
@@ -98,6 +130,7 @@ module.exports = {
                   done(null, userFound);
               })
               .catch((err) => {
+                  console.log(err)
                   return res.status(500).json({ 'error': 'unable to verify user' });
               });
             },
@@ -135,7 +168,7 @@ module.exports = {
         getUserMe: (req, res) => {
         
           let headerAuth = req.headers['authorization']
-          let userId = jwtutils.getUserId(headerAuth)
+          let userId = jwtUtils.getUserId(headerAuth)
   
   
           if(userId < 0) {
@@ -160,14 +193,12 @@ module.exports = {
         },
         PutUser: ( req, res) => {
           let headerAuth  = req.headers['authorization'];
-          let userId = jwtutils.getUserId(headerAuth);
+          let userId = jwtUtils.getUserId(headerAuth);
           
           let nom = req.body.nom;
           let prenom = req.body.prenom;
           let email = req.body.email;
-          let role = req.body.role;
-          
-          //var userId = req.params.id;
+          let isAdmin = req.body.isAdmin;
    
        asyncLib.waterfall([
            (done) => {
@@ -193,7 +224,7 @@ module.exports = {
                      done(userFound);
                  })
                  .catch((err) => {
-                     res.status(400).json({ 'error': 'An error occurred' });
+                     res.status(500).json({ 'error': 'cannot update user' });
                  });
                }
                else {
@@ -206,8 +237,36 @@ module.exports = {
                  res.status(200).json({'success': 'User successfuly modified'})
              } 
              else {
-               return res.status(400).json({ 'error': 'An error occurred' });
+               return res.status(500).json({ 'error': 'cannot update user profile' });
              }
            });
-        }
+        },
+        deleteUser: (req, res) => {
+        
+          let headerAuth  = req.headers['authorization'];
+          let userId      = jwtUtils.getUserId(headerAuth);
+  
+          asyncLib.waterfall([
+              (done) => {
+                  models.User.destroy({
+                      where: { id: userId }
+                  })
+                  .then((userFound) => {
+                      done(userFound)
+                  })
+                  .catch((err) => {
+                      return res.status(400).json({ 'error': 'An error occurred' });
+                  });
+              }],
+              (userFound) => {
+                  if (userFound) {
+                      console.log(userFound)
+                      return res.status(200).json({'success':`User successfuly deleted`})
+                  }
+                  else {
+
+                      return res.status(404).json({ 'error': 'User was not found' });
+                  }
+              });
+      },
 }

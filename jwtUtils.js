@@ -8,7 +8,7 @@ module.exports = {
     generateTokenForUser: (userData) => {
         return jwt.sign({
             userId: userData.id,
-           // isAdmin:userData.isAdmin - voir si on laisse
+            //isAdmin: userData.isAdmin 
         },
         JWT_SIGN_SECRET,
         {
