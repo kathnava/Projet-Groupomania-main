@@ -11,17 +11,17 @@ const ITEMS_LIMIT   = 50;
 
 // Routes
 module.exports = {
-  CreateComment: (req, res) => {
+  CreatePublication: (req, res) => {
   // Getting auth header
+
+   //get token from cookies
   var headerAuth  = req.cookies.auth;
   console.log(req.cookies.auth)
+
+  //decrypt token and get user id
   var userId      = jwtUtils.getUserId(headerAuth);
-  //get token from cookies
-/*  token.get("/login", (req, res) => {
-    const token = jwtUtils.generateTokenForUser(userFound);
-    return res
-      .cookie("token", token)*/
-  //decrypt token and get user id 
+ 
+   
 console.log('---------------', userId)
   // Params
   //var idComment   = req.body.idCommentaire;
@@ -38,20 +38,20 @@ console.log('---------------', userId)
   asyncLib.waterfall([
     
     (done) => {
-        models.Commentaire.create({
+        models.Publication.create({
           texte: texte,
-          userId : userId.id,
+          userId : userId,
 
         })
-        .then((newCommentaire) => {
-          done(newCommentaire);
+        .then((newPublication) => {
+          done(newPublication);
         });
       } 
-  ], (newCommentaire) => {
-    if (newCommentaire) {
-      return res.status(201).json(newCommentaire);
+  ], (newPublication) => {
+    if (newPublication) {
+      return res.status(201).json(newPublication);
     } else {
-      return res.status(500).json({ 'error': 'cannot post comment ' });
+      return res.status(500).json({ 'error': 'cannot post publication ' });
     }
   });
   }

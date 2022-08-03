@@ -17,7 +17,7 @@ module.exports = {
         let password = req.body.password;
         let isAdmin = req.body.isAdmin;
 
-        if (email == null || nom == null || prenom == null || password == null) {
+        if (email == "" || nom == "" || prenom == "" || password == "") {
             return res.status(400).json({'error': 'Parametres manquantes'})
         }
         if(!EMAIL_REGEX.test(email)) {

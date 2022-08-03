@@ -20,4 +20,4 @@ server.use('/api/', apiRouter);
 
 server.listen(3500, function() {
     console.log('Server en écoute :)');
-});
+})

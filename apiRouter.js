@@ -1,7 +1,7 @@
 const express = require('express');
-const userCtrl = require('./routes/userCtrl');
-const CommentCtrl = require('./routes/CommentCtrl');
-const likesCtrl = require('./routes/likesCtrl');
+const userCtrl = require('./controleurs/userCtrl');
+const publicationCtrl = require('./controleurs/publicationCtrl');
+const likesCtrl = require('./controleurs/likesCtrl');
 
 // Router
 exports.router = (function() {
@@ -17,7 +17,7 @@ apiRouter.route('/getUser/:id').get(userCtrl.getUser)
 apiRouter.route('/getAll').get(userCtrl.getAllUsers)
 
 //Commentaire Routes
-apiRouter.route('/new/').post(CommentCtrl.CreateComment);
+apiRouter.route('/new/').post(publicationCtrl.CreateComment);
 //apiRouter.route('/Commentaire/').get(CommentCtrl.ListeComment);
 
 //Likes Routes
