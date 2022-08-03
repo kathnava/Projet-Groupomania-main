@@ -136,6 +136,7 @@ module.exports = {
             },
             (userFound, done) => {
               if (userFound) {
+                console.log(userFound)
                 bcrypt.compare(password, userFound.password, (errBycrypt, resBycrypt) => {
                   done(null, userFound, resBycrypt);
                 });
@@ -155,9 +156,11 @@ module.exports = {
           ], 
           (userFound) => {
             if (userFound) {
-              return res.status(201).json({
+              let token = jwtUtils.generateTokenForUser(userFound);
+              res.cookie('auth',token);   
+              res.status(201).json({
                 'id': userFound.id,
-                'token': jwtUtils.generateTokenForUser(userFound)
+                'token': token
               });
             } 
             else {
